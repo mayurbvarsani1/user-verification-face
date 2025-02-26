@@ -1,5 +1,5 @@
-
 import 'dart:io';
+
 import 'package:image_task/image_task.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -27,8 +27,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 padding: const EdgeInsets.only(right:10),
                 child: inkWell(onTap: () {
                   controller.init();
+                  controller.homeLoader = false;
                   controller.update(["home_loader"]);
-                  print("refresh");
                 },child: Icon(Icons.refresh)),
               );
             }
@@ -91,10 +91,14 @@ class _HomeScreenState extends State<HomeScreen> {
                       height: 200,
                     ),
                   appSizedBox(height: 1.h),
-                  if (controller.present.isNotEmpty ) Text('Present: ${controller.present.join(', ')}',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold,color: Colors.black),),
+                  if (controller.present.isNotEmpty )
+                    Text('Present: ${controller.present.join(', ')}',
+                      style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold,color: Colors.black),),
                   appSizedBox(height: 0.50.h),
 
-                  if (controller.missing.isNotEmpty ) Text('Missing: ${controller.missing.join(', ')}',style: TextStyle(fontSize: 18,color: Colors.black)),
+                  if (controller.missing.isNotEmpty )
+                    Text('Missing: ${controller.missing.join(', ')}',
+                        style: TextStyle(fontSize: 18,color: Colors.black)),
                 ],
               ),
             ),

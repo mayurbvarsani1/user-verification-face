@@ -8,7 +8,7 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" tools:node="remove"/>
     <application
-        android:label="image_task"
+        android:label="FaceScan"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

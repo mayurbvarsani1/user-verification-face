@@ -1,11 +1,7 @@
-
-
-
 import 'package:image_task/image_task.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   runApp(const MyApp());
 }
 

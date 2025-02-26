@@ -1,20 +1,17 @@
-
 import 'dart:io';
 
-
+import 'package:image_task/common/widget/compress_file.dart';
 import 'package:image_task/image_task.dart';
 
+class HomeController extends GetxController {
+  init() {
+    individuals = [];
 
-class HomeController extends GetxController{
-init(){
+    groupImage = null;
+    present = [];
+    missing = [];
+  }
 
-  individuals = [];
-
- groupImage  = null;
-  present = [];
-  missing = [];
-
-}
   final ImagePicker _picker = ImagePicker();
   List<Map<String, dynamic>> individuals = [];
   File? groupImage;
@@ -22,10 +19,11 @@ init(){
   List<String> missing = [];
   bool homeLoader = false;
 
-
   Future<void> uploadIndividualImage(BuildContext context) async {
     final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+
     if (image != null) {
+      File? compFile = await compressImage(File(image.path));
       String? name = await showDialog(
         context: context,
         builder: (context) {
@@ -68,31 +66,30 @@ init(){
         },
       );
 
-        individuals.add({'name': name, 'image': File(image.path)});
-        update(["home_loader"]);
-
+      individuals.add({'name': name, 'image': File(compFile?.path ?? "")});
+      update(["home_loader"]);
     }
   }
 
   Future<void> uploadGroupImage() async {
     final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
-    if (image != null) {
 
-        groupImage = File(image.path);
-        print("groupImage=>${groupImage}");
-        update(["home_loader"]);
+    if(image != null){
+      File? compFile = await compressImage(File(image.path));
+      groupImage = File(compFile?.path ?? "");
+      print("groupImage=>${groupImage}");
+      update(["home_loader"]);
 
-        await callAzureFaceAPI();
+      await callAzureFaceAPI();
     }
+
   }
 
   Future<void> callAzureFaceAPI() async {
     if (groupImage == null || individuals.isEmpty) return;
 
-
-    homeLoader = true; // Start loading
+    homeLoader = true;
     update(["home_loader"]);
-
 
     var groupFaceIds = await HomeApi.detectFaces(groupImage!);
     print("groupFaceIds=>${groupFaceIds}");
@@ -124,11 +121,7 @@ init(){
       }
     }
 
-
-      homeLoader = false; // Stop loading
-      update(["home_loader"]);
-
-    }
-
-
+    homeLoader = false;
+    update(["home_loader"]);
+  }
 }
